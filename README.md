@@ -14,7 +14,7 @@ En cuanto a las fases de esta metodología, cada una de las partes o entregables
 
 ## Características de un archivo JSON
 
-JavaScript Object Notation (JSON)  es un formato ligero de intercambio de datos basado en el lenguaje JavaScript. Este es de fácil lectura y escritura tanto para las personas, así como sencillo de analizar por las máquinas.
+JavaScript Object Notation (JSON)  es un formato ligero de intercambio de datos basado en el lenguaje JavaScript. Este es de fácil lectura y escritura  para las personas, así como sencillo de analizar por las máquinas.
 
 JSON consta de dos estructuras universales, las cuales son soportadas por todos los lenguajes de programación:
 - Una colección de pares de nombre/valor conocido como un objeto, registro, estructura, diccionario, tabla hash, lista de claves o un arreglo asociativo.
