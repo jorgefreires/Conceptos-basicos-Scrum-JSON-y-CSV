@@ -1,6 +1,6 @@
 # Reto 2 del programa educativo Digital Developer Fullstack Jr. de Digital NAO x Tecmilenio
 
-Este repositorio ha sido creado con para subir las evidencias de uno de los retos del programa educativo Digital Developer Fullstack Jr. de Digital NAO x Tecmilenio.
+Este repositorio ha sido creado para subir las evidencias de uno de los retos del programa educativo Digital Developer Fullstack Jr. de Digital NAO x Tecmilenio.
 
 A continuación, se hará una pequeña introducción a los distintas nociones teóricas previas necesarias para el desarrollo del reto.
 
