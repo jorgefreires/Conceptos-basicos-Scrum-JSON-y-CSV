@@ -1,6 +1,6 @@
 # Reto 2 del programa educativo Digital Developer Fullstack Jr. de Digital NAO x Tecmilenio
 
-Este repositorio ha sido creado para subir las evidencias de uno de los retos del programa educativo Digital Developer Fullstack Jr. de Digital NAO x Tecmilenio. Dicha evidencia consiste en la creación de una aplicación de escritorio, mediante el uso de JavaScript, capaz de leer una archivo JSON y transformarlo a CSV. Se ha utilizado Eclipse como plataforma para desarrollar el código y json.simple y OPENCSV como librerias para la lectura y/o escritura de los archivos JSON y CSV.
+Este repositorio ha sido creado para subir las evidencias de uno de los retos del programa educativo Digital Developer Fullstack Jr. de Digital NAO x Tecmilenio. Dicha evidencia consiste en la creación de una aplicación de escritorio, mediante el uso de Java, capaz de leer una archivo JSON y transformarlo a CSV. Se ha utilizado Eclipse como plataforma para desarrollar el código y json.simple y OPENCSV como librerias para la lectura y/o escritura de los archivos JSON y CSV.
 
 A continuación, se hará una pequeña introducción a los distintas nociones teóricas previas necesarias para el desarrollo del reto.
 
