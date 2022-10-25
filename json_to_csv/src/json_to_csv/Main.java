@@ -1,31 +1,54 @@
 package json_to_csv;
 
+/**
+ * Este código sirve para leer un arhivo json llamado datos.json y convertirlo en un archivo csv llamado data.csv con aquellos datos relevantes
+ * Se utilizan las librerias opencsv u json.simple, habiendo que realizar los import que se encuentran debajo
+ * @author jorgefreire
+ *@version1.0
+ */
+
 import java.io.FileWriter;
+
 import java.io.FilenameFilter;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Iterator;
-
-import javax.naming.directory.SearchResult;
+import java.util.List;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import com.opencsv.CSVReader;
+import com.opencsv.CSVWriter;
+import com.opencsv.exceptions.CsvException;
+
 public class Main {
 
+	/**
+	 * Esta es el método principal de la clase, que incluye los métodos específicos para leer el archivo JSON y convertir el archivo JSON en un archivo CSV
+	 */
+	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
-		leer();
+		leerJSON();
+		escribirCSV();
 
 	}
 
-	private static void leer() {
+	/**
+	 * Se incia el método que lee el archivo JSON
+	 * Dentro de este método se utilizan otros métodos para leer los JSONArray existentes
+	 */
+	
+	private static void leerJSON() {
 		
 		JSONParser jsonParser = new JSONParser ();
 		
@@ -83,6 +106,10 @@ public class Main {
 		
 	}
 
+	/**
+	 * Método para poder leer el apartado links
+	 */
+	
 	private static void mostrarInformacionLink(JSONObject link) {
 		
 		String fa = (String) link.get("@_fa");
@@ -98,7 +125,10 @@ public class Main {
 		System.out.println("Type: " + type);
 	}
 		
-
+	/**
+	 * Método para poder leer el apartado entry
+	 */
+	
 	private static void mostrarInformacionEntry(JSONObject entry) {
 		
 		System.out.println("\n---ENTRY---");
@@ -183,8 +213,12 @@ public class Main {
 		
 		String keywords = (String) entry.get("authkeywords");
 		System.out.println("KEYWORDS: " + keywords);
-				
+		
 	}
+	
+	/**
+	 * Método para poder leer el apartado link presente dentro del apartado entry
+	 */
 	
 	private static void mostrarInformacionLinks2(JSONObject link2) {
 		
@@ -197,6 +231,10 @@ public class Main {
 		String href2 = (String) link2.get("@href");
 		System.out.println("Href: " + href2);
 	}
+	
+	/**
+	 * Método para poder leer el apartado affiliation presente dentro del apartado entry
+	 */
 	
 	private static void mostrarInformacionAffiliation(JSONObject affiliation) {
 		
@@ -224,6 +262,10 @@ public class Main {
 		}
 	}
 	
+	/**
+	 * Método para poder leer el apartado name variant presente dentro del apartado affiliation, a su vez perteneciente a entry
+	 */
+	
 	private static void mostrarInformacionNameVariant(JSONObject nameVariant) {
 		
 		String fa5 = (String) nameVariant.get("@_fa");
@@ -232,6 +274,10 @@ public class Main {
 		String institution = (String) nameVariant.get("$");
 		System.out.println("Institution: "+ institution);
 	}
+	
+	/**
+	 * Método para poder leer el apartado authors presente dentro del apartado entry
+	 */
 	
 	private static void mostrarInformacionAuthors(JSONObject autor) {
 		
@@ -256,5 +302,134 @@ public class Main {
 		String initials = (String) autor.get("initials");
 		System.out.println("Initials: " + initials);
 	}
+		
+	/**
+	 * En este punto comienza a escribirse el codigo necesario para generar y escribir el archivo CSV
+	 */
 	
+	private static void escribirCSV() {
+		
+		/**
+		 * Iniciamos el CSVWriter
+		 */
+		
+		CSVWriter headerWriter;	
+			
+		try {
+				
+			/**
+			 * Se crea el archivo data.csv, se ponen los titulos o encabezados de cada categoría y se cierra el escritor
+			 */
+			
+			headerWriter = new CSVWriter(new FileWriter("data.csv", true));
+				
+			String[] header = {"URL","SCOPUS_ID","TITLE", "CREATOR", "PUBLICATIONNAME", "ISSN", "EISSN", "VOLUME", "PAGERANGE", "COVERDATE", "COVERDISPLAYDATE", "DOI", "CITEDBY-COUNT", "AGGREGATIONTYPE", "SYBTYPE", "SUBTYPEDESCRIPTION", };
+			headerWriter.writeNext(header);
+			
+			headerWriter.close();
+				
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		
+		/**
+		 * Se vuleven a obtener los datos del apartado entry, el cuál contiene los datos que nos interesan
+		 */
+		
+		JSONParser jsonParser = new JSONParser ();
+		
+		try(FileReader reader = new FileReader ("datos.json")) {
+			
+			JSONObject documento = (JSONObject) jsonParser.parse(reader);
+	
+			JSONObject resultados = (JSONObject)documento.get("search-results");
+			
+			JSONArray Entrys = (JSONArray) resultados.get("entry");
+			for(Object Entry: Entrys) {
+				
+				/**
+				 * con este método escribiremos los datos del entry en el csv
+				 */
+				
+				mostrarInformacionEntryR ((JSONObject) Entry);
+			}
+			
+		} catch (FileNotFoundException e) {
+		e.printStackTrace();	
+		} catch(IOException e) {
+			e.printStackTrace();		
+		} catch(ParseException e) {
+			e.printStackTrace();
+		} 
+		
+	}
+			
+	/**
+	 * Iniciamos el método que nos permitira escribir los datos del apartado entry en el csv
+	 * comenzamos obteniendo los datos del entry que queremos escribir
+	 */
+	
+	private static void mostrarInformacionEntryR(JSONObject entry) {
+		
+		String url = (String) entry.get("prism:url");
+		
+		String identificador = (String) entry.get("dc:identifier");
+		
+		String title = (String) entry.get("dc:title");
+		
+		String creator = (String) entry.get("dc:creator");
+		
+		String publicationName = (String) entry.get("prism:publicationName");
+		
+		String issn = (String) entry.get("prism:issn");
+		
+		String eissn = (String) entry.get("prism:elssn");
+		
+		String volume = (String) entry.get("prism:volume");
+		
+		String pageRange = (String) entry.get("prism:pageRange");
+		
+		String coverDate = (String) entry.get("prism:coverDate");
+		
+		String coverDisplayDate = (String) entry.get("prism:coverDisplayDate");
+		
+		String doi = (String) entry.get("prism:doi");
+
+		String citedBy = (String) entry.get("citedby-count");
+		
+		String aggregationType = (String) entry.get("prism:aggregationType");
+		
+		String subtype = (String) entry.get("subtype");
+		
+		String subtypeDescription = (String) entry.get("subtypeDescription");
+		
+		/**
+		 * Ahora escribimos los datos 
+		 * MUY IMPORTANTE: El nombre del archivo debe ser el mismo (en este caso data.csv) para que no se cree uno nuevo
+		 */
+		
+		CSVWriter datosWriter = null;
+		
+		try {
+			
+			datosWriter = new CSVWriter(new FileWriter("data.csv", true));
+		
+			
+			String[] info = {url,identificador,title, creator, publicationName, issn, eissn, volume, pageRange, coverDate, coverDisplayDate, doi, citedBy, aggregationType, subtype, subtypeDescription};
+			datosWriter.writeNext(info);
+			
+			datosWriter.close();
+			
+		} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+		
+	}
+	
+	/**
+	 * Ya tenemos nuestro archivo data.csv en la carpeta de nuestro proyecto
+	 */
 }
